@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdscript name="jobRegistryDialogue" debug="true">
   <cues>
-    <cue name="JR_ConversationExtensionManagerSupport" instantiate="true" namespace="this">
+    <cue name="AddJobRegistryConversationChoice" instantiate="true" namespace="this">
       <conditions>
         <event_cue_signalled/>
       </conditions>
@@ -10,7 +10,7 @@
       </actions>
     </cue>
 
-    <cue name="JR_InjectChoice" instantiate="true" namespace="this">
+    <cue name="RegisterJobRegistryConversationOption" instantiate="true" namespace="this">
       <conditions>
         <check_any>
           <event_conversation_started conversation="default" />
@@ -20,10 +20,10 @@
       </conditions>
       <actions>
         <do_if value="@md.ExtendedConversationMenu.Main.exists">
-          <set_value name="md.ExtendedConversationMenu.Main.$convOptions.$JobRegistryMenu" exact="table[ $signalCue = JR_ConversationExtensionManagerSupport, $params = [] ]"/>
+          <set_value name="md.ExtendedConversationMenu.Main.$convOptions.$JobRegistryConversationOption" exact="table[ $signalCue = AddJobRegistryConversationChoice, $params = [] ]"/>
         </do_if>
         <do_else>
-          <signal_cue_instantly cue="JR_ConversationExtensionManagerSupport"/>
+          <signal_cue_instantly cue="AddJobRegistryConversationChoice"/>
         </do_else>
       </actions>
     </cue>
@@ -37,7 +37,7 @@
           <open_conversation_menu menu="Arckame_JobRegistry_Menu" param="[$station]" />
         </do_if>
         <do_else>
-          <debug_text text="'[ARCK-JR] ERROR: Cannot find station'" filter="error" />
+          <debug_text text="'Job Registry could not find a station for this conversation'" filter="error" />
         </do_else>
       </actions>
     </cue>
