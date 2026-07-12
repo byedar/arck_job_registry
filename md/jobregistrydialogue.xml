@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdscript name="jobRegistryDialogue" debug="true">
   <cues>
+    <cue name="JR_ConversationExtensionManagerSupport" instantiate="true" namespace="this">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+        <add_player_choice_sub text="{75200, 1}" section="openRegistry" />
+      </actions>
+    </cue>
+
     <cue name="JR_InjectChoice" instantiate="true" namespace="this">
       <conditions>
         <check_any>
           <event_conversation_started conversation="default" />
           <event_conversation_returned_to_section section="default" />
         </check_any>
-        <check_value value="typeof event.object == datatype.component and event.object.controlpost == controlpost.manager" />
+        <check_value value="typeof event.object == datatype.component and event.object.controlpost == controlpost.manager and @event.object.station.exists" />
       </conditions>
       <actions>
-        <add_player_choice text="{75200, 1}" section="openRegistry" />
+        <do_if value="@md.ExtendedConversationMenu.Main.exists">
+          <set_value name="md.ExtendedConversationMenu.Main.$convOptions.$JobRegistryMenu" exact="table[ $signalCue = JR_ConversationExtensionManagerSupport, $params = [] ]"/>
+        </do_if>
+        <do_else>
+          <signal_cue_instantly cue="JR_ConversationExtensionManagerSupport"/>
+        </do_else>
       </actions>
     </cue>
     <cue name="openRegistry" instantiate="true" namespace="this">
